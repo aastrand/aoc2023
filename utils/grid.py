@@ -72,6 +72,12 @@ class Grid:
             print(row)
         print()
 
+    def neighbours(self, pos, offsets=OFFSETS):
+        for o in offsets:
+            n = (pos[0] + o[0], pos[1] + o[1])
+            if n in self.data:
+                yield (n, self.get(n))
+
     def from_lines(lines, visitor=lambda *a, **kw: 0):
         grid = Grid()
         for y in range(0, len(lines)):
@@ -83,6 +89,14 @@ class Grid:
                 visitor(grid, pos, val)
 
         return grid
+
+    def walk(self, visitor=lambda *a, **kw: 0):
+        for y in range(self.minY, self.maxY + 1):
+            for x in range(self.minX, self.maxX + 1):
+                pos = (x, y)
+                val = self.get((x, y))
+
+                visitor(self, pos, val)
 
     def flood_fill(self, pos, visitor=lambda _: ()):
         q = [pos]
