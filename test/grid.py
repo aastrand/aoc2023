@@ -111,6 +111,31 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(((max(bounds[1]) + 1)**3) -
                          (len(blocked) + 1), len(visited))
 
+    def test_grid_neighbours(self):
+        grid = Grid.from_lines(self.LINES)
+
+        neighbours = [n[0] for n in grid.neighbours((0, 0))]
+        self.assertEqual([(1, 0), (0, 1), (1, 1)], neighbours)
+        vals = [n[1] for n in grid.neighbours((0, 0))]
+        self.assertEqual(['.', '.', '.'], vals)
+
+        neighbours = [n[0] for n in grid.neighbours((12, 1))]
+        self.assertEqual([(13, 1), (11, 1), (12, 2), (12, 0),
+                          (11, 0), (13, 2), (13, 0), (11, 2)], neighbours)
+        vals = [n[1] for n in grid.neighbours((12, 1))]
+        self.assertEqual(['#', '#', '.', '.', '.', '.', '.', '.'], vals)
+
+    def test_walk(self):
+        grid = Grid.from_lines(self.LINES)
+
+        context = {'sum': 0}
+
+        def visitor(_grid, _pos, val, context=context):
+            context['sum'] += 1 if val == '#' else 0
+
+        grid.walk(visitor)
+        self.assertEqual(61, context['sum'])
+
 
 if __name__ == "__main__":
     unittest.main()
