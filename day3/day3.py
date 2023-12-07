@@ -5,8 +5,8 @@ import sys
 from utils import io
 from utils.grid import Grid
 
-NUMS = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-BASE = NUMS + ('.',)
+NUMS = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+BASE = NUMS + (".",)
 
 
 def parse(lines):
@@ -53,7 +53,7 @@ def solve(filename):
         found_gears = set()
         for c in num_coords:
             for n in grid.neighbours(c):
-                if n[1] == '*':
+                if n[1] == "*":
                     found_gears.add(n[0])
                 if n[1] not in BASE and n[0] not in num_coords:
                     adjecent = True
@@ -80,7 +80,7 @@ def main():
     assert part1 == 4361
     assert part2 == 467835
 
-    part1, part2 = solve("input.txt")
+    part1, part2 = solve("../input/2023/day3.txt")
     print(part1)
     print(part2)
 

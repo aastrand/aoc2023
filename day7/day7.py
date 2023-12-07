@@ -120,11 +120,11 @@ def solve(filename, with_joker=False):
 
 def main():
     assert solve("example.txt") == 6440
-    print(solve("input.txt"))
+    print(solve("../input/2023/day7.txt"))
 
     assert solve("example.txt", True) == 5905
     assert Hand.to_hand("JJJJJ", 0, True) < Hand.to_hand("AAAJA", 0, True)
-    print(solve("input.txt", True))
+    print(solve("../input/2023/day7.txt", True))
 
 
 if __name__ == "__main__":

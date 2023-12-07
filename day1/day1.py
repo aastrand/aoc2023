@@ -30,12 +30,12 @@ def part1(filename):
 
 
 words = {
-    'o': [('one', 1)],
-    't': [('two', 2), ('three', 3)],
-    'f': [('four', 4), ('five', 5)],
-    's': [('six', 6), ('seven', 7)],
-    'e': [('eight', 8)],
-    'n': [('nine', 9)]
+    "o": [("one", 1)],
+    "t": [("two", 2), ("three", 3)],
+    "f": [("four", 4), ("five", 5)],
+    "s": [("six", 6), ("seven", 7)],
+    "e": [("eight", 8)],
+    "n": [("nine", 9)],
 }
 
 
@@ -71,10 +71,10 @@ def part2(filename):
 
 def main():
     assert part1("example.txt") == 142
-    print(part1("input.txt"))
+    print(part1("../input/2023/day1.txt"))
 
     assert part2("example2.txt") == 281
-    print(part2("input.txt"))
+    print(part2("../input/2023/day1.txt"))
 
 
 if __name__ == "__main__":

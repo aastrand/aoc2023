@@ -144,14 +144,14 @@ def main():
     assert maps.maps[6].map(43) == 43
 
     assert part1("example.txt") == 35
-    print(part1("input.txt"))
+    print(part1("../input/2023/day5.txt"))
 
     assert maps.maps[6].inv_map(57) == 94
     assert maps.inv_map(35) == 13
 
     assert part2("example.txt") == 46
     # brute force, saving some time here
-    print(part2("input.txt", start=27992442))
+    print(part2("../input/2023/day5.txt", start=27992442))
 
 
 if __name__ == "__main__":

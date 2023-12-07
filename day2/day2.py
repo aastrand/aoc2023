@@ -5,14 +5,14 @@ import sys
 from utils import io
 
 limits = {
-    'red': 12,
-    'green': 13,
-    'blue': 14,
+    "red": 12,
+    "green": 13,
+    "blue": 14,
 }
 
 
 def power(maxes):
-    return maxes['red'] * maxes['green'] * maxes['blue']
+    return maxes["red"] * maxes["green"] * maxes["blue"]
 
 
 def play(games):
@@ -49,7 +49,7 @@ def main():
     assert part1 == 8
     assert part2 == 2286
 
-    part1, part2 = play(io.get_lines("input.txt"))
+    part1, part2 = play(io.get_lines("../input/2023/day2.txt"))
     print(part1)
     print(part2)
 

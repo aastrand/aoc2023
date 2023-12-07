@@ -36,7 +36,7 @@ def part2(time, distance):
 
 def main():
     assert part1("example.txt") == 288
-    print(part1("input.txt"))
+    print(part1("../input/2023/day6.txt"))
 
     assert part2(71530, 940200) == 71503
     print(part2(49877895, 356137815021882))
