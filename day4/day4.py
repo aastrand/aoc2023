@@ -10,12 +10,7 @@ def parse(lines):
     for line in lines:
         card = line.split(" | ")
         card_num = int(card[0].split(": ")[0].split("Card ")[1])
-        nums = set(
-            [
-                int(i)
-                for i in card[0].split(": ")[1].strip().replace("  ", " ").split(" ")
-            ]
-        )
+        nums = set([int(i) for i in card[0].split(": ")[1].strip().replace("  ", " ").split(" ")])
         winners = set([int(i) for i in card[1].strip().replace("  ", " ").split(" ")])
 
         copies = len(nums.intersection(winners))

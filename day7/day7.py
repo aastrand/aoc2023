@@ -45,13 +45,9 @@ class Hand:
             return -1
         else:
             for i in range(5):
-                if to_value(self.hand[i], self.with_joker) > to_value(
-                    other.hand[i], other.with_joker
-                ):
+                if to_value(self.hand[i], self.with_joker) > to_value(other.hand[i], other.with_joker):
                     return 1
-                elif to_value(self.hand[i], self.with_joker) < to_value(
-                    other.hand[i], other.with_joker
-                ):
+                elif to_value(self.hand[i], self.with_joker) < to_value(other.hand[i], other.with_joker):
                     return -1
             return 0
 

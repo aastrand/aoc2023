@@ -7,8 +7,7 @@ BOTTOM_RIGHT = (1, 1)
 TOP_RIGHT = (1, -1)
 BOTTOM_LEFT = (-1, 1)
 
-OFFSETS = (RIGHT, LEFT, BOTTOM, TOP, TOP_LEFT,
-           BOTTOM_RIGHT, TOP_RIGHT, BOTTOM_LEFT)
+OFFSETS = (RIGHT, LEFT, BOTTOM, TOP, TOP_LEFT, BOTTOM_RIGHT, TOP_RIGHT, BOTTOM_LEFT)
 OFFSETS_STRAIGHT = (RIGHT, LEFT, TOP, BOTTOM)
 
 RIGHT_3D = (1, 0, 0)
@@ -18,8 +17,7 @@ TOP_3D = (0, -1, 0)
 FRONT_3D = (0, 0, 1)
 BEHIND_3D = (0, 0, -1)
 
-OFFSETS_STRAIGHT_3D = (RIGHT_3D, LEFT_3D, TOP_3D,
-                       BOTTOM_3D, FRONT_3D, BEHIND_3D)
+OFFSETS_STRAIGHT_3D = (RIGHT_3D, LEFT_3D, TOP_3D, BOTTOM_3D, FRONT_3D, BEHIND_3D)
 
 
 class Grid:
@@ -34,11 +32,9 @@ class Grid:
         self.set_at(coords[0], coords[1], val)
 
     def set_at(self, x, y, val):
-        self.minX = min(
-            self.minX if self.minX is not None else float('inf'), x)
+        self.minX = min(self.minX if self.minX is not None else float("inf"), x)
         self.maxX = max(self.maxX if self.maxX is not None else 0, x)
-        self.minY = min(
-            self.minY if self.minY is not None else float('inf'), y)
+        self.minY = min(self.minY if self.minY is not None else float("inf"), y)
         self.maxY = max(self.maxY if self.maxY is not None else 0, y)
         self.data[(x, y)] = val
 
@@ -52,7 +48,9 @@ class Grid:
         return self.data.items()
 
     def print_output(self, default="."):
-        return self.print_output_from(self.minX, self.maxX, self.minY, self.maxY, default)
+        return self.print_output_from(
+            self.minX, self.maxX, self.minY, self.maxY, default
+        )
 
     def print_output_from(self, minX, maxX, minY, maxY, default="."):
         rows = []
@@ -133,8 +131,7 @@ def adjecent_3d(c1, c2):
 def inside_3d(point, bounds):
     inside = True
     for i in range(0, 3):
-        inside &= (point[i] >= bounds[0][i] and
-                   point[i] < bounds[1][i] + 1)
+        inside &= point[i] >= bounds[0][i] and point[i] < bounds[1][i] + 1
 
     return inside
 

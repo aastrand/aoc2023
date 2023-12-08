@@ -5,16 +5,17 @@ from utils.grid import (Grid, adjecent_3d, flood_fill_3d, inside_3d,
 
 
 class TestGrid(unittest.TestCase):
-
-    LINES = [".......#................#......",
-             "...#.#.....#.##.....#..#.......",
-             "..#..#.#......#.#.#............",
-             "....#...#...##.....#..#.....#..",
-             "....#.......#.##......#...#..#.",
-             "...............#.#.#.....#..#..",
-             "...##...#...#..##.###...##.....",
-             "##..#.#...##.....#.#..........#",
-             ".#....#..#..#......#....#....#."]
+    LINES = [
+        ".......#................#......",
+        "...#.#.....#.##.....#..#.......",
+        "..#..#.#......#.#.#............",
+        "....#...#...##.....#..#.....#..",
+        "....#.......#.##......#...#..#.",
+        "...............#.#.#.....#..#..",
+        "...##...#...#..##.###...##.....",
+        "##..#.#...##.....#.#..........#",
+        ".#....#..#..#......#....#....#.",
+    ]
 
     def test_grid_empty(self):
         grid = Grid()
@@ -43,20 +44,16 @@ class TestGrid(unittest.TestCase):
     def test_mutation(self):
         grid = Grid.from_lines(self.LINES)
         self.assertEqual(None, grid.get((-1, -1)))
-        self.assertEqual('.', grid.get((1, 1)))
-        self.assertEqual('#', grid.get((2, 2)))
+        self.assertEqual(".", grid.get((1, 1)))
+        self.assertEqual("#", grid.get((2, 2)))
 
-        grid.set((100, 100), '#')
-        self.assertEqual('#', grid.get((100, 100)))
+        grid.set((100, 100), "#")
+        self.assertEqual("#", grid.get((100, 100)))
         self.assertEqual(100, grid.maxX)
         self.assertEqual(100, grid.maxY)
 
     def test_flood_fill(self):
-        lines = ["......",
-                 ".####.",
-                 ".#..#.",
-                 ".####.",
-                 "......"]
+        lines = ["......", ".####.", ".#..#.", ".####.", "......"]
         grid = Grid.from_lines(lines)
 
         visitor_set = set()
@@ -84,8 +81,10 @@ class TestGrid(unittest.TestCase):
     def test_neighbours_3d(self):
         point = (2, 2, 2)
         neighbours = sorted([n for n in neighbours_3d(point)])
-        self.assertEqual([(1, 2, 2), (2, 1, 2), (2, 2, 1),
-                          (2, 2, 3), (2, 3, 2), (3, 2, 2)], neighbours)
+        self.assertEqual(
+            [(1, 2, 2), (2, 1, 2), (2, 2, 1), (2, 2, 3), (2, 3, 2), (3, 2, 2)],
+            neighbours,
+        )
 
     def test_flood_fill_3d(self):
         blocked = set()
@@ -108,8 +107,7 @@ class TestGrid(unittest.TestCase):
             self.assertTrue(b not in visited)
 
         # should not reach inner point via fill
-        self.assertEqual(((max(bounds[1]) + 1)**3) -
-                         (len(blocked) + 1), len(visited))
+        self.assertEqual(((max(bounds[1]) + 1) ** 3) - (len(blocked) + 1), len(visited))
 
     def test_grid_neighbours(self):
         grid = Grid.from_lines(self.LINES)
@@ -117,24 +115,26 @@ class TestGrid(unittest.TestCase):
         neighbours = [n[0] for n in grid.neighbours((0, 0))]
         self.assertEqual([(1, 0), (0, 1), (1, 1)], neighbours)
         vals = [n[1] for n in grid.neighbours((0, 0))]
-        self.assertEqual(['.', '.', '.'], vals)
+        self.assertEqual([".", ".", "."], vals)
 
         neighbours = [n[0] for n in grid.neighbours((12, 1))]
-        self.assertEqual([(13, 1), (11, 1), (12, 2), (12, 0),
-                          (11, 0), (13, 2), (13, 0), (11, 2)], neighbours)
+        self.assertEqual(
+            [(13, 1), (11, 1), (12, 2), (12, 0), (11, 0), (13, 2), (13, 0), (11, 2)],
+            neighbours,
+        )
         vals = [n[1] for n in grid.neighbours((12, 1))]
-        self.assertEqual(['#', '#', '.', '.', '.', '.', '.', '.'], vals)
+        self.assertEqual(["#", "#", ".", ".", ".", ".", ".", "."], vals)
 
     def test_walk(self):
         grid = Grid.from_lines(self.LINES)
 
-        context = {'sum': 0}
+        context = {"sum": 0}
 
         def visitor(_grid, _pos, val, context=context):
-            context['sum'] += 1 if val == '#' else 0
+            context["sum"] += 1 if val == "#" else 0
 
         grid.walk(visitor)
-        self.assertEqual(61, context['sum'])
+        self.assertEqual(61, context["sum"])
 
 
 if __name__ == "__main__":

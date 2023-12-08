@@ -52,7 +52,7 @@ def digits_letters(line):
         except ValueError:
             if char in words:
                 for c in words[char]:
-                    if idx+len(c[0]) <= len(line) and line[idx:idx+len(c[0])] == c[0]:
+                    if idx + len(c[0]) <= len(line) and line[idx : idx + len(c[0])] == c[0]:
                         digits.append(c[1])
         idx += 1
 
