@@ -48,9 +48,7 @@ class Grid:
         return self.data.items()
 
     def print_output(self, default="."):
-        return self.print_output_from(
-            self.minX, self.maxX, self.minY, self.maxY, default
-        )
+        return self.print_output_from(self.minX, self.maxX, self.minY, self.maxY, default)
 
     def print_output_from(self, minX, maxX, minY, maxY, default="."):
         rows = []
@@ -96,7 +94,7 @@ class Grid:
 
                 visitor(self, pos, val)
 
-    def flood_fill(self, pos, visitor=lambda _: ()):
+    def flood_fill(self, pos, visitor=lambda *a, **kw: 0):
         q = [pos]
         visited = set()
         visited.add(pos)
