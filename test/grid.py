@@ -1,7 +1,6 @@
 import unittest
 
-from utils.grid import (Grid, adjecent_3d, flood_fill_3d, inside_3d,
-                        neighbours_3d)
+from utils.grid import Grid, adjecent_3d, flood_fill_3d, inside_3d, neighbours_3d, rot_90
 
 
 class TestGrid(unittest.TestCase):
@@ -135,6 +134,20 @@ class TestGrid(unittest.TestCase):
 
         grid.walk(visitor)
         self.assertEqual(61, context["sum"])
+
+    def test_rot_90(self):
+        lines = ["123", "456", "789"]
+        rotated = rot_90(lines)
+        self.assertEqual(["741", "852", "963"], rotated)
+
+        rotated = rot_90(rotated)
+        self.assertEqual(["987", "654", "321"], rotated)
+
+        rotated = rot_90(rotated)
+        self.assertEqual(["369", "258", "147"], rotated)
+
+        rotated = rot_90(rotated)
+        self.assertEqual(["123", "456", "789"], rotated)
 
 
 if __name__ == "__main__":

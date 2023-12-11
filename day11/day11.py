@@ -3,12 +3,8 @@
 import sys
 
 from utils import io
-from utils.grid import Grid
+from utils.grid import Grid, rot_90
 from utils.math import manhattan_dist
-
-
-def rot_90(lst):
-    return ["".join(list(reversed(x))) for x in zip(*lst)]
 
 
 def parse(lines, padding=2):

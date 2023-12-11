@@ -154,3 +154,7 @@ def flood_fill_3d(start, blocked, bounds):
                 q.append(n)
 
     return visited
+
+
+def rot_90(lst):
+    return ["".join(list(reversed(x))) for x in zip(*lst)]
