@@ -9,9 +9,7 @@ from utils import io
 def hash(s):
     h = 0
     for c in s:
-        h += ord(c)
-        h *= 17
-        h = h % 256
+        h = (h + ord(c)) * 17 % 256
 
     return h
 
@@ -21,29 +19,15 @@ def part1(filename):
 
 
 def part2(filename):
-    boxes = defaultdict(list)
+    boxes = defaultdict(dict)
     for part in io.get_input(filename).strip().split(","):
         if "=" in part:
             label, fl = part.split("=")
-            box = boxes[hash(label)]
-            fl = int(fl)
-
-            for i in range(len(box)):
-                other_label, other_fl = box[i]
-                if label == other_label:
-                    box.pop(i)
-                    box.insert(i, (label, fl))
-                    break
-            else:
-                box.append((label, fl))
+            boxes[hash(label)][label] = fl
 
         elif "-" in part:
             label = part[:-1]
-            box = boxes[hash(label)]
-
-            for other_label, other_fl in box:
-                if label == other_label:
-                    box.remove((other_label, other_fl))
+            boxes[hash(label)].pop(label, None)
 
         else:
             raise "Unknown op"
@@ -54,8 +38,8 @@ def part2(filename):
 
     sum = 0
     for box in boxes.keys():
-        for i in range(len(boxes[box])):
-            sum += (1 + box) * (i + 1) * boxes[box][i][1]
+        for i, val in enumerate(boxes[box].values()):
+            sum += (1 + box) * (i + 1) * int(val)
 
     return sum
 
