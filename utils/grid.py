@@ -112,6 +112,19 @@ class Grid:
         return visited
 
 
+def oppoosite(dir):
+    if dir == RIGHT:
+        return LEFT
+    elif dir == LEFT:
+        return RIGHT
+    elif dir == TOP:
+        return BOTTOM
+    elif dir == BOTTOM:
+        return TOP
+    else:
+        raise Exception("Unknown direction", dir)
+
+
 def adjecent_3d(c1, c2):
     if c1 == c2:
         return False

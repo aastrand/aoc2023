@@ -1,4 +1,6 @@
+import sys
 from collections import defaultdict
+from heapq import heappop, heappush
 
 from .grid import OFFSETS_STRAIGHT
 
@@ -51,39 +53,27 @@ def get_path(prev, start, end):
     return path
 
 
-def dijkstra(graph, start, end):
-    Q = set()
+def dijkstra(grid, starts, neighbours: lambda grid, cur: [], get_dist: lambda grid, pos, n: 0):
     dist = {}
     prev = {}
+    pq = []
 
-    for pos in graph.keys():
-        dist[pos] = float("inf")
-        prev[pos] = None
-        Q.add(pos)
-    dist[start] = 0.0
+    for start in starts:
+        heappush(pq, (0, start))
 
-    while len(Q) > 0:
-        u = _get_min_dist(Q, dist)
-        Q.remove(u)
+    while len(pq) > 0:
+        (heat, cur) = heappop(pq)
 
-        for neighbour in graph[u]:
-            alt = dist[u] + 1.0
-            if alt < dist.get(neighbour, float("inf")):
-                dist[neighbour] = alt
-                prev[neighbour] = u
+        for n in neighbours(grid, cur):
+            if n not in dist:
+                new_heat = heat + get_dist(grid, cur, n)
+                if new_heat < dist.get(n, sys.maxsize):
+                    if n not in dist:
+                        dist[n] = new_heat
+                        prev[n] = cur
+                        heappush(pq, (new_heat, n))
 
-    path = get_path(prev, start, end)
-
-    return path, dist, prev
-
-
-def _get_min_dist(Q, dist):
-    min = float("inf")
-    for v in Q:
-        if dist[v] <= min:
-            min = dist[v]
-            min_node = v
-    return min_node
+    return dist, prev
 
 
 def from_grid(grid, condition):

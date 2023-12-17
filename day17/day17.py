@@ -1,26 +1,13 @@
 #!/usr/bin/env python3
 
 import sys
-from heapq import heappop, heappush
 
 from utils import io
-from utils.grid import BOTTOM, LEFT, OFFSETS_STRAIGHT, RIGHT, TOP, Grid
+from utils.graph import dijkstra
+from utils.grid import BOTTOM, OFFSETS_STRAIGHT, RIGHT, Grid, oppoosite
 
 
-def oppoosite(dir):
-    if dir == RIGHT:
-        return LEFT
-    elif dir == LEFT:
-        return RIGHT
-    elif dir == TOP:
-        return BOTTOM
-    elif dir == BOTTOM:
-        return TOP
-    else:
-        raise Exception("Unknown direction", dir)
-
-
-def neighbours(grid, cur, part2=False):
+def neighbours(grid, cur, part2):
     max_moves = 3 if not part2 else 10
     min_moves = None if not part2 else 4
     if part2:
@@ -59,23 +46,20 @@ def neighbours(grid, cur, part2=False):
     return neighbours
 
 
-def find(grid, start, end, part2=False):
-    dist = dict()
-    pq = []
+def get_dist(grid, _, n):
+    return int(grid.get(n[0]))
 
+
+def solve(filename, part2=False):
+    grid = Grid.from_lines(io.get_lines(filename))
+    start = (0, 0)
+    end = (grid.maxX, grid.maxY)
+
+    starts = []
     for direction in [RIGHT, BOTTOM]:
-        heappush(pq, (0, (start, direction, 0)))
+        starts.append((start, direction, 0))
 
-    while len(pq) > 0:
-        (heat, cur) = heappop(pq)
-
-        for n in neighbours(grid, cur, part2):
-            if n not in dist:
-                new_heat = heat + int(grid.get(n[0]))
-                if new_heat < dist.get(n, sys.maxsize):
-                    if n not in dist:
-                        dist[n] = new_heat
-                        heappush(pq, (new_heat, n))
+    dist, _ = dijkstra(grid, starts, lambda grid, cur: neighbours(grid, cur, part2), get_dist)
 
     m = sys.maxsize
     for cur, val in dist.items():
@@ -83,11 +67,6 @@ def find(grid, start, end, part2=False):
             m = min(m, val)
 
     return m
-
-
-def solve(filename, part2=False):
-    grid = Grid.from_lines(io.get_lines(filename))
-    return find(grid, (0, 0), (grid.maxX, grid.maxY), part2)
 
 
 def main():
