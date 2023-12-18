@@ -94,7 +94,7 @@ class Grid:
 
                 visitor(self, pos, val)
 
-    def flood_fill(self, pos, visitor=lambda *a, **kw: 0):
+    def flood_fill(self, pos, val=".", visitor=lambda *a, **kw: 0):
         q = [pos]
         visited = set()
         visited.add(pos)
@@ -105,7 +105,7 @@ class Grid:
 
             for o in OFFSETS_STRAIGHT:
                 neighbour = (pos[0] + o[0], pos[1] + o[1])
-                if self.get(neighbour) == "." and neighbour not in visited:
+                if self.get(neighbour) == val and neighbour not in visited:
                     q.append(neighbour)
                     visited.add(neighbour)
 

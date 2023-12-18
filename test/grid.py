@@ -56,7 +56,7 @@ class TestGrid(unittest.TestCase):
         grid = Grid.from_lines(lines)
 
         visitor_set = set()
-        visited = grid.flood_fill((0, 0), lambda g, p: visitor_set.add(p))
+        visited = grid.flood_fill((0, 0), ".", lambda g, p: visitor_set.add(p))
 
         self.assertTrue((5, 4) in visited)
         self.assertTrue((1, 1) not in visited)
