@@ -10,9 +10,10 @@ chmod +x day${1}/day${1}.py
 # cookie: session=<token-copied-from-browser-devtools>
 mkdir -p input/$year
 curl -o input/$year/day$1.txt -H @.cookie.txt -A "mkday.sh by github.com/aastrand via cURL" https://adventofcode.com/$year/day/$1/input
-cat input/$year/day$1.txt 
+cat input/$year/day$1.txt
 
 cd input
 git add $year/day$1.txt
 git commit -am "${year} day $1"
-cd $OLDPWD
+git push origin main
+cd ../day$1
