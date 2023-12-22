@@ -17,3 +17,5 @@ git add $year/day$1.txt
 git commit -am "${year} day $1"
 git push origin main
 cd ../day$1
+
+open day$1.py
