@@ -62,16 +62,16 @@ def dijkstra(grid, starts, neighbours: lambda grid, cur: [], get_dist: lambda gr
         heappush(pq, (0, start))
 
     while len(pq) > 0:
-        (heat, cur) = heappop(pq)
+        (val, cur) = heappop(pq)
 
         for n in neighbours(grid, cur):
             if n not in dist:
-                new_heat = heat + get_dist(grid, cur, n)
-                if new_heat < dist.get(n, sys.maxsize):
+                new_val = val + get_dist(grid, cur, n)
+                if new_val < dist.get(n, sys.maxsize):
                     if n not in dist:
-                        dist[n] = new_heat
+                        dist[n] = new_val
                         prev[n] = cur
-                        heappush(pq, (new_heat, n))
+                        heappush(pq, (new_val, n))
 
     return dist, prev
 
