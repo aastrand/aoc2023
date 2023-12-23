@@ -120,7 +120,25 @@ def simplify(graph, dist):
     for r in removals:
         del graph[r]
 
-    return graph, dist
+    # unncessary but faster: use integers in a matrix instead of tuples in a dict
+    lookup = {}
+    for i, node in enumerate(graph):
+        lookup[node] = i
+
+    listgraph = []
+    for i, node in enumerate(graph):
+        listgraph.append([])
+        listgraph[i] = [lookup[n] for n in graph[node]]
+
+    listdist = []
+    for i, node in enumerate(graph):
+        listdist.append([0] * len(graph))
+
+    for node in graph:
+        for neighbor in graph[node]:
+            listdist[lookup[node]][lookup[neighbor]] = dist[(node, neighbor)]
+
+    return listgraph, listdist
 
 
 def find_longest_path(graph, dist, start, end):
@@ -135,7 +153,7 @@ def find_longest_path(graph, dist, start, end):
 
         max_length = float("-inf")
         for neighbor in graph[node]:
-            length = dist[(node, neighbor)] + dfs(neighbor, visited)
+            length = dist[node][neighbor] + dfs(neighbor, visited)
             max_length = max(max_length, length)
 
         visited.remove(node)
@@ -154,8 +172,6 @@ def part2(filename):
 
     grid.walk(visitor)
 
-    start = (1, 0)
-    end = (grid.maxX - 1, grid.maxY)
     graph = from_grid(grid, lambda grid, pos, val, other: other == "." and val == ".")
 
     dist = {}
@@ -163,9 +179,11 @@ def part2(filename):
         for n in graph[node]:
             dist[(node, n)] = 1
 
+    # shrink the graph to the points that matter - the junctions where path split
     graph, dist = simplify(graph, dist)
 
-    return find_longest_path(graph, dist, start, end)
+    # brute force find all paths with dfs
+    return find_longest_path(graph, dist, 0, len(graph) - 1)
 
 
 def main():
