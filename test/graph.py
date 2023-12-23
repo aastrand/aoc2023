@@ -1,6 +1,6 @@
 import unittest
 
-from utils.graph import bfs, dfs, dijkstra, floyd_warshall, from_grid, get_path
+from utils.graph import bfs, dfs, dijkstra, find_longest_path_length, floyd_warshall, from_grid, get_path
 from utils.grid import Grid
 
 
@@ -173,3 +173,35 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(3, result[("DD", "GG")])
         self.assertEqual(2, result[("AA", "FF")])
         self.assertEqual(2, result[("FF", "AA")])
+
+    def test_find_longest_path_length(self):
+        graph = {}
+        graph[0] = [1, 5]
+        graph[1] = [0, 2]
+        graph[2] = [1, 3, 4]
+        graph[3] = [2, 4]
+        graph[4] = [2, 10]
+        graph[5] = [0, 6, 7]
+        graph[6] = [5, 7, 8, 10]
+        graph[7] = [5, 6, 8]
+        graph[8] = [6, 7, 9]
+        graph[9] = [8]
+        graph[10] = [4, 6]
+
+        distances = {}
+        self.assertEqual(5, find_longest_path_length(graph, lambda n1, n2: distances.get((n1, n2), 1), 0, 10))
+
+        distances = {
+            (0, 5): 10,
+            (5, 6): 10,
+            (6, 10): 10,
+        }
+        self.assertEqual(30, find_longest_path_length(graph, lambda n1, n2: distances.get((n1, n2), 1), 0, 10))
+
+        distances = {
+            (0, 5): 10,
+            (5, 6): 10,
+            (5, 7): 100,
+            (6, 10): 10,
+        }
+        self.assertEqual(122, find_longest_path_length(graph, lambda n1, n2: distances.get((n1, n2), 1), 0, 10))

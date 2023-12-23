@@ -4,7 +4,7 @@ import sys
 from collections import defaultdict
 
 from utils import io
-from utils.graph import from_grid
+from utils.graph import find_longest_path_length, from_grid
 from utils.grid import OFFSETS_STRAIGHT, Grid
 
 sys.setrecursionlimit(2000)
@@ -141,28 +141,6 @@ def simplify(graph, dist):
     return listgraph, listdist
 
 
-def find_longest_path(graph, dist, start, end):
-    def dfs(node, visited):
-        if node == end:
-            return 0
-
-        if node in visited:
-            return float("-inf")
-
-        visited.add(node)
-
-        max_length = float("-inf")
-        for neighbor in graph[node]:
-            length = dist[node][neighbor] + dfs(neighbor, visited)
-            max_length = max(max_length, length)
-
-        visited.remove(node)
-
-        return max_length
-
-    return dfs(start, set())
-
-
 def part2(filename):
     grid = Grid.from_lines(io.get_lines(filename))
 
@@ -183,7 +161,7 @@ def part2(filename):
     graph, dist = simplify(graph, dist)
 
     # brute force find all paths with dfs
-    return find_longest_path(graph, dist, 0, len(graph) - 1)
+    return find_longest_path_length(graph, lambda n1, n2: dist[n1][n2], 0, len(graph) - 1)
 
 
 def main():

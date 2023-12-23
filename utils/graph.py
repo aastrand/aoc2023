@@ -105,3 +105,25 @@ def floyd_warshall(graph):
                     distance[(i, j)] = min(distance[(i, j)], distance[(i, k)] + distance[(k, j)])
 
     return distance
+
+
+def find_longest_path_length(graph, dist, start, end):
+    def dfs(node, visited):
+        if node == end:
+            return 0
+
+        if node in visited:
+            return float("-inf")
+
+        visited.add(node)
+
+        max_length = float("-inf")
+        for neighbor in graph[node]:
+            length = dist(node, neighbor) + dfs(neighbor, visited)
+            max_length = max(max_length, length)
+
+        visited.remove(node)
+
+        return max_length
+
+    return dfs(start, set())
