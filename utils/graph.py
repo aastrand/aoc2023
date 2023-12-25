@@ -127,3 +127,12 @@ def find_longest_path_length(graph, dist, start, end):
         return max_length
 
     return dfs(start, set())
+
+
+def create_dotfile(graph):
+    with open("graph.dot", "w") as f:
+        f.write("digraph G {\n")
+        for node, neighours in graph.items():
+            for n in neighours:
+                f.write(f'"{node}" -> "{n}";\n')
+        f.write("}")
