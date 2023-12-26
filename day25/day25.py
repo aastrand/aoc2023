@@ -3,6 +3,9 @@
 import sys
 from collections import defaultdict
 
+from networkx import Graph
+from networkx.algorithms.connectivity.cuts import minimum_edge_cut
+from networkx.algorithms.traversal import bfs_tree
 from utils import io
 from utils.graph import bfs, create_dotfile
 
@@ -46,9 +49,30 @@ def part1(filename, example=False):
     return p
 
 
+def part1nx(filename, example=False):
+    graph = Graph()
+    for line in io.get_lines(filename):
+        node, neighours = line.split(": ")
+        for n in neighours.split(" "):
+            graph.add_edge(node, n)
+
+    for p1, p2 in minimum_edge_cut(graph):
+        graph.remove_edge(p1, p2)
+
+    p = 1
+    candidates = set(graph.nodes())
+    while candidates:
+        visited = bfs_tree(graph, candidates.pop()).nodes()
+        p *= len(visited)
+        candidates -= visited
+
+    return p
+
+
 def main():
     assert part1("example.txt", True) == 54
     print(part1("../input/2023/day25.txt"))
+    print(part1nx("../input/2023/day25.txt"))
 
 
 if __name__ == "__main__":
