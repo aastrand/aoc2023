@@ -3,3 +3,4 @@
 **/*.pyc
 .gitconfig
 .cookie.txt
+**/*.dot

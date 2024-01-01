@@ -1,6 +1,6 @@
 import unittest
 
-from utils.graph import bfs, dfs, dijkstra, find_longest_path_length, floyd_warshall, from_grid, get_path
+from utils.graph import astar, bfs, dfs, dijkstra, find_longest_path_length, floyd_warshall, from_grid, get_path
 from utils.grid import Grid
 
 
@@ -78,8 +78,7 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(5 in visited)
 
     def test_dijkstra_empty(self):
-        graph = {}
-        dist, prev = dijkstra(graph, [0], lambda *x: [], lambda *x: 0)
+        dist, prev = dijkstra([0], lambda *x: [], lambda *x: 0)
 
         self.assertEqual(0, len(dist))
         self.assertEqual(0, len(prev))
@@ -100,13 +99,13 @@ class TestGraph(unittest.TestCase):
 
         distances = {}
 
-        def neighbours(graph, cur):
+        def neighbours(cur):
             return graph.get(cur, [])
 
-        def get_dist(_graph, pos, n):
+        def get_dist(pos, n):
             return distances.get((pos, n), 1)
 
-        dist, prev = dijkstra(graph, [0], neighbours, get_dist)
+        dist, prev = dijkstra([0], neighbours, get_dist)
         path = get_path(prev, 0, 10)
 
         self.assertEqual([5, 6, 10], path)
@@ -120,7 +119,7 @@ class TestGraph(unittest.TestCase):
             (6, 10): 10,
         }
 
-        dist, prev = dijkstra(graph, [0], neighbours, get_dist)
+        dist, prev = dijkstra([0], neighbours, get_dist)
         path = get_path(prev, 0, 10)
 
         self.assertEqual([1, 2, 4, 10], path)
@@ -205,3 +204,56 @@ class TestGraph(unittest.TestCase):
             (6, 10): 10,
         }
         self.assertEqual(122, find_longest_path_length(graph, lambda n1, n2: distances.get((n1, n2), 1), 0, 10))
+
+    def test_astar(self):
+        maze = [
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...........#...",
+            "...............",
+            "...........#...",
+            "...........#...",
+        ]
+        grid = Grid.from_lines(maze)
+        graph = from_grid(grid, lambda p, n, v, o: v != "#" and o != "#")
+
+        def neighbours(cur):
+            return graph.get(cur, [])
+
+        def get_dist(pos, n):
+            return 1
+
+        def heuristic(pos, end):
+            return abs(pos[0] - end[0]) + abs(pos[1] - end[1])
+
+        start = (0, 0)
+        end = (14, 0)
+        dist, prev = astar(start, end, neighbours, get_dist, heuristic)
+
+        path = get_path(prev, start, end)
+        for p in path:
+            grid.set(p, "X")
+
+        grid.set(start, "S")
+        grid.set(end, "E")
+
+        out = grid.print_output()
+        expected = [
+            "SXXXXXXXXXX#XXE",
+            "..........X#X..",
+            "..........X#X..",
+            "..........X#X..",
+            "..........X#X..",
+            "..........X#X..",
+            "..........X#X..",
+            "..........X#X..",
+            "..........XXX..",
+            "...........#...",
+            "...........#...",
+        ]
+        self.assertEqual(expected, out)

@@ -59,7 +59,7 @@ def solve(filename, part2=False):
     for direction in [RIGHT, BOTTOM]:
         starts.append((start, direction, 0))
 
-    dist, _ = dijkstra(grid, starts, lambda grid, cur: neighbours(grid, cur, part2), get_dist)
+    dist, _ = dijkstra(starts, lambda cur: neighbours(grid, cur, part2), lambda cur, n: get_dist(grid, cur, n))
 
     m = sys.maxsize
     for cur, val in dist.items():

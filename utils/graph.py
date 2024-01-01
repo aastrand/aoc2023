@@ -46,14 +46,14 @@ def get_path(prev, start, end):
     path = []
     u = end
     if u in prev or u == start:
-        while u:
+        while u and u != start:
             path.insert(0, u)
             u = prev.get(u)
 
     return path
 
 
-def dijkstra(grid, starts, neighbours: lambda grid, cur: [], get_dist: lambda grid, pos, n: 0):
+def dijkstra(starts, neighbours: lambda cur: [], get_dist: lambda pos, n: 0):
     dist = {}
     prev = {}
     pq = []
@@ -64,14 +64,38 @@ def dijkstra(grid, starts, neighbours: lambda grid, cur: [], get_dist: lambda gr
     while len(pq) > 0:
         (val, cur) = heappop(pq)
 
-        for n in neighbours(grid, cur):
+        for n in neighbours(cur):
             if n not in dist:
-                new_val = val + get_dist(grid, cur, n)
+                new_val = val + get_dist(cur, n)
                 if new_val < dist.get(n, sys.maxsize):
                     if n not in dist:
                         dist[n] = new_val
                         prev[n] = cur
                         heappush(pq, (new_val, n))
+
+    return dist, prev
+
+
+def astar(start, end, neighbours: lambda cur: [], get_dist: lambda pos, n: 0, heuristic=lambda pos, end: 0):
+    dist = {}
+    prev = {}
+    pq = []
+
+    heappush(pq, (0, start))
+
+    while len(pq) > 0:
+        (val, cur) = heappop(pq)
+
+        if cur == end:
+            break
+
+        for n in neighbours(cur):
+            if n not in dist:
+                new_val = val + get_dist(cur, n)
+                if new_val < dist.get(n, sys.maxsize):
+                    dist[n] = new_val
+                    prev[n] = cur
+                    heappush(pq, (new_val + heuristic(n, end), n))
 
     return dist, prev
 
